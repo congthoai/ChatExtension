@@ -21,9 +21,7 @@ public class ChattingHandler extends BaseClientRequestHandler{
         
         List<User> users = ZoneProvider.getListUser();
         
-        if(users != null) {
-        	send(Constant.SEND_EVENT.CHATTING_EVENT, resObj, users);
-        }
+        send(Constant.SEND_EVENT.CHATTING_EVENT, resObj, users);
 	}
 	
 	public ISFSObject params2ChatModel(ISFSObject params) {

@@ -1,5 +1,6 @@
 package com.chatting.provider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.smartfoxserver.v2.entities.User;
@@ -28,7 +29,7 @@ public class ZoneProvider {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		return null;
+		return new ArrayList<User>();
 	}
 	
 }
