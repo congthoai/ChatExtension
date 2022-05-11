@@ -21,21 +21,20 @@ public class ActionGameHandler extends BaseClientRequestHandler{
 			return;
 		}
 		
+		List<User> users = ZoneProvider.getListUser(); 
 		ISFSObject obj = new SFSObject(); 
 		Integer currentNumber = GameProvider.getInstance().getCurrentNumber();
-		Integer playerChoice = params.getInt("playerChoice");
-		String message = sender.getName() + " - server: " + currentNumber + " choice: " + playerChoice;
 		
-		if(currentNumber.equals(params.getInt("playerChoice"))) {
-			GameProvider.getInstance().getPlayers().get(sender.getId()).addPoint();		
-			GameProvider.getInstance().getNumberList().remove(currentNumber);
-			message += " MATCH";
+		if(!currentNumber.equals(params.getInt("playerChoice"))) {
+			obj.putInt("currentNumber", GameProvider.getInstance().getCurrentNumber());
+			send(Constant.SEND_EVENT.NOT_MATCH, obj, users);
+			return;
 		}
-				
-		List<User> users = ZoneProvider.getListUser(); 
+		
+		GameProvider.getInstance().getPlayers().get(sender.getId()).addPoint();		
+		GameProvider.getInstance().removeAndRandomNumberInList(currentNumber);
 		
 		if(GameProvider.getInstance().getNumberList().size() == 0) {
-			GameProvider.getInstance().setStart(false);
 			PlayerModel winPlayer = getWinner(sender.getId());			
 			obj.putUtfString("winnerPlayer", winPlayer.getUsername());
 			
@@ -43,12 +42,9 @@ public class ActionGameHandler extends BaseClientRequestHandler{
 			return;
 		}
 			 
-		GameProvider.getInstance().getRandomNumberInList();	
     	obj.putInt("currentNumber", GameProvider.getInstance().getCurrentNumber());
-    	obj.putUtfString("message", message);
     	 	       
-    	send(Constant.SEND_EVENT.ACTION_RECEIVE, obj, users);
-    	send(Constant.SEND_EVENT.ACTION_SEND, obj, users);
+    	send(Constant.SEND_EVENT.MATCH, obj, users);
 	}
 	
 	private PlayerModel getWinner(int currentPlayerId) {

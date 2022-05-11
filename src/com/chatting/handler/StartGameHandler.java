@@ -20,15 +20,13 @@ public class StartGameHandler extends BaseClientRequestHandler{
 		GameProvider.getInstance().getPlayers().put(params.getInt("player1Id"), new PlayerModel(params.getUtfString("player1"), 0));
 		GameProvider.getInstance().getPlayers().put(params.getInt("player2Id"), new PlayerModel(params.getUtfString("player2"), 0));
 		GameProvider.getInstance().setNumberList(params.getInt("arraySize"));
-		GameProvider.getInstance().getRandomNumberInList();
+		GameProvider.getInstance().removeAndRandomNumberInList(null);
 		GameProvider.getInstance().setStart(true);
 		
 		ISFSObject obj = new SFSObject(); 
     	obj.putInt("currentNumber", GameProvider.getInstance().getCurrentNumber());
-    	obj.putUtfString("message", "Start Game");
     	
     	List<User> users = ZoneProvider.getListUser();    	
-    	send(Constant.SEND_EVENT.ACTION_RECEIVE, obj, users);
-    	send(Constant.SEND_EVENT.ACTION_SEND, obj, users);
+    	send(Constant.SEND_EVENT.NOT_MATCH, obj, users);
 	}	
 }

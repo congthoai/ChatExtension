@@ -34,6 +34,7 @@ public class JoinGameHandler extends BaseClientRequestHandler{
         	obj.putInt("player1Id", users.get(0).getId());
         	obj.putUtfString("player2", users.get(1).getName());
         	obj.putInt("player2Id", users.get(1).getId());
+        	
         	send(Constant.SEND_EVENT.START_GAME, obj, sender);
         	return;
         }

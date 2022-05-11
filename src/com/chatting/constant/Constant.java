@@ -9,6 +9,8 @@ public class Constant {
         public static final String ACTION_RECEIVE = "actionReceive";
         public static final String WIN_GAME = "win";
         public static final String LOG_OUT = "logout";
+        public static final String MATCH = "match";
+        public static final String NOT_MATCH = "notMatch";
     }
 
 	public interface CHAT_MODEL {

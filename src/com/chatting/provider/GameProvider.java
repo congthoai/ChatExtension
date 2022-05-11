@@ -61,7 +61,16 @@ public class GameProvider {
 		this.isStart = isStart;
 	}
 
-	public int getRandomNumberInList() {
+	public int removeAndRandomNumberInList(Integer num) {
+		// Remove
+		this.numberList.remove(num);
+		
+		if(numberList.size() == 0) {
+			isStart = false;
+			return -999;
+		}
+		
+		// Random
 		Random rand = new Random();
 	    int randNum = this.numberList.get(rand.nextInt(this.numberList.size()));
 	    this.currentNumber = randNum;
