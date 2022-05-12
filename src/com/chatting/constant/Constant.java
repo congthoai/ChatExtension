@@ -20,6 +20,15 @@ public class Constant {
     }
 	
 	public interface PLAYER_MODEL {
-		
+		public static final String POINT = "point";
+    }
+	
+	public interface GAME_MODEL {
+		public static final String RANDOM_NUMBER = "serverRandomNumber";
+        public static final String NUMBER_LIST = "serverNumberList";
+        public static final String END_GAME = "endGame";
+        public static final String PLAYERS = "players";
+        public static final String PLAYER_CHOICE = "playerChoice";
+        public static final String WINNER = "winnerPlayer";
     }
 }
