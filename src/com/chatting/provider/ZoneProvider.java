@@ -32,4 +32,8 @@ public class ZoneProvider {
 		return new ArrayList<User>();
 	}
 	
+	public static User getUserById(int uid) {
+		return (User) instance.ext.getParentZone().getUserById(uid);
+	}
+	
 }
