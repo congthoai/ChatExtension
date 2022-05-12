@@ -35,7 +35,7 @@ public class JoinGameHandler extends BaseClientRequestHandler {
 
 	public void newGame(User u1, User u2) {
 		GameModel game = new GameModel(u1, u2);
-		game.removeAndRandomNumberInList(null);
+		game.removeAndRandomNumberInList(-1);
 		GameProvider.addGames(game);
 
 		ISFSObject obj = new SFSObject();

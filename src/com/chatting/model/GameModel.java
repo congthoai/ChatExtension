@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
-import com.chatting.provider.ZoneProvider;
 import com.smartfoxserver.v2.entities.User;
 
 public class GameModel {
@@ -15,6 +15,7 @@ public class GameModel {
 	private List<Integer> serverNumberList = new ArrayList<>();
 	private Integer serverRandomNumber;
 	private boolean endGame = false;
+	private Random rand = new Random();
 
 	public GameModel(User p1, User p2) {
 		super();
@@ -25,6 +26,11 @@ public class GameModel {
 		for (int i = 0; i < 10; i++) {
 			this.serverNumberList.add(i);
 		}
+		this.serverRandomNumber = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));
+	}
+	
+	public Set<Integer> getPlayerIds() {
+		return players.keySet();
 	}
 
 	public Map<Integer, PlayerModel> getPlayers() {
@@ -51,36 +57,27 @@ public class GameModel {
 		this.endGame = endGame;
 	}
 
-	public int removeAndRandomNumberInList(Integer num) {
-		// Remove
-		this.serverNumberList.remove(num);
-
-		if (serverNumberList.size() == 0) {
-			endGame = true;
-			return -999;
+	public boolean removeAndRandomNumberInList(Integer num) {	
+		if (serverRandomNumber == num && this.serverNumberList.remove(num)) {
+			this.serverRandomNumber = this.serverNumberList.size() > 0
+					? this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()))
+					: -1;
+			return true;
 		}
-
-		// Random
-		Random rand = new Random();
-		int randNum = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));
-		this.serverRandomNumber = randNum;
-		return randNum;
+		return false;
 	}
 
-	public PlayerModel getWinner() {
-		List<Integer> ids = new ArrayList<Integer>(players.keySet());
-		return players.get(ids.get(0)).compareTo(players.get(ids.get(1))) > 0
-				? players.get(ids.get(0))
-				: players.get(ids.get(1));
-	}
+	public List<PlayerModel> getWinners() {
+		List<PlayerModel> winList = new ArrayList<>();
+		int winPoint = players.values().stream().map(c -> c.point).max((c1, c2) -> c1 - c2).orElse(0);
+		
+		players.values().forEach(item ->  {
+			if(item.getPoint() >= winPoint) {
+				winList.add(item);
+			}
+		}) ;
 	
-	public List<User> getUsers() {
-		List<User> users = new ArrayList<>();
-		List<Integer> ids = new ArrayList<Integer>(players.keySet());
-		for(int uid : ids) {
-			users.add(ZoneProvider.getUserById(uid));
-		}
-		return users;
+		return winList;
 	}
-	
+
 }

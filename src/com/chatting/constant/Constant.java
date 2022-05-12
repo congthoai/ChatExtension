@@ -29,6 +29,6 @@ public class Constant {
         public static final String END_GAME = "endGame";
         public static final String PLAYERS = "players";
         public static final String PLAYER_CHOICE = "playerChoice";
-        public static final String WINNER = "winnerPlayer";
+        public static final String WINNER_LIST = "winnerList";
     }
 }

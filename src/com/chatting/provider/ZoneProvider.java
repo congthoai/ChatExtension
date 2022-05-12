@@ -2,6 +2,7 @@ package com.chatting.provider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.extensions.SFSExtension;
@@ -34,6 +35,14 @@ public class ZoneProvider {
 	
 	public static User getUserById(int uid) {
 		return (User) instance.ext.getParentZone().getUserById(uid);
+	}
+	
+	public static List<User> getGameUsers(Set<Integer> ids) {
+		List<User> users = new ArrayList<>();
+		for(int uid : ids) {
+			users.add(ZoneProvider.getUserById(uid));
+		}
+		return users;
 	}
 	
 }
