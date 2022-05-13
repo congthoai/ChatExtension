@@ -1,7 +1,5 @@
 package com.chatting.handler;
 
-import java.util.stream.Collectors;
-
 import com.chatting.constant.Constant;
 import com.chatting.model.GameModel;
 import com.chatting.provider.GameProvider;
@@ -53,7 +51,7 @@ public class ActionGameHandler extends BaseClientRequestHandler {
 	
 	private void handleWin(User sender, GameModel game) {
 		ISFSObject obj = new SFSObject();
-		obj.putUtfStringArray(Constant.GAME_MODEL.WINNER_LIST, game.getWinners().stream().map(item -> item.getUsername()).collect(Collectors.toList()));
+		obj.putIntArray(Constant.GAME_MODEL.WINNER_LIST, game.getWinners());
 		
 		send(Constant.SEND_EVENT.WIN_GAME, obj, ZoneProvider.getGameUsers(game.getPlayerIds()));
 	}

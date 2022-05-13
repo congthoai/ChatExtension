@@ -9,29 +9,27 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.smartfoxserver.v2.entities.User;
-
 public class GameModel {
 
-	private Map<Integer, PlayerModel> players;
+	private Map<Integer, Integer> players;
 	private List<Integer> serverNumberList;
 	private Integer serverRandomNumber;
 	private boolean endGame = false;
 	private Random rand;
 
-	public GameModel(List<User> uList, Random rand) {
+	public GameModel(Set<Integer> uList, Random rand) {
 		this.rand = rand;
 		this.players = new HashMap<>();		
 		this.serverNumberList = IntStream.range(0, 10).boxed().collect(Collectors.toList());		
 		this.serverRandomNumber = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));	
-		uList.forEach(u -> players.put(u.getId(), new PlayerModel(u.getName())));
+		uList.forEach(uid -> players.put(uid, 0));
 	}
 	
 	public Set<Integer> getPlayerIds() {
 		return players.keySet();
 	}
 
-	public Map<Integer, PlayerModel> getPlayers() {
+	public Map<Integer, Integer> getPlayers() {
 		return players;
 	}
 
@@ -59,15 +57,15 @@ public class GameModel {
 		return false;
 	}
 
-	public List<PlayerModel> getWinners() {
-		List<PlayerModel> winList = new ArrayList<>();
-		int winPoint = players.values().stream().map(c -> c.point).max((c1, c2) -> c1 - c2).orElse(0);
+	public List<Integer> getWinners() {
+		List<Integer> winList = new ArrayList<>();
+		int winPoint = players.values().stream().map(c -> c).max((c1, c2) -> c1 - c2).orElse(0);
 		
-		players.values().forEach(item ->  {
-			if(item.getPoint() >= winPoint) {
-				winList.add(item);
+		players.keySet().forEach(uid ->  {
+			if(players.get(uid) >= winPoint) {
+				winList.add(players.get(uid));
 			}
-		}) ;
+		});
 	
 		return winList;
 	}

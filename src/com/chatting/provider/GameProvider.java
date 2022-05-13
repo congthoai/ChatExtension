@@ -4,21 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.chatting.constant.Constant;
 import com.chatting.model.GameModel;
-import com.chatting.model.PlayerModel;
-import com.smartfoxserver.v2.entities.User;
 
 public class GameProvider {
 	private static GameProvider instance = null;
 
 	List<GameModel> games;
-	Set<User> waitingList;
+	Set<Integer> waitingList;
 	Random random = new Random();
 
 	private GameProvider() {
@@ -38,23 +35,23 @@ public class GameProvider {
 		instance.games.add(game);
 	}
 
-	public static void addWaitingList(User user) {
-		instance.waitingList.add(user);
+	public static void addWaitingList(int uid) {
+		instance.waitingList.add(uid);
 	}
 	
-	public static List<User> getPlayersAndRemoveWaitingList() {
+	public static Set<Integer> startGame() {
 
 		if (instance.waitingList.size() < Constant.GAME_CONFIG.NUM_PLAYER) {
-			return Collections.emptyList();
+			return Collections.emptySet();
 		}
 
-		List<User> uList = instance.waitingList.stream().limit(Constant.GAME_CONFIG.NUM_PLAYER).collect(Collectors.toList()); 		
-		List<User> removedList = new ArrayList<>();
+		Set<Integer> uList = instance.waitingList.stream().limit(Constant.GAME_CONFIG.NUM_PLAYER).collect(Collectors.toSet()); 		
+		Set<Integer> removedList = new HashSet<>();
 		
-		for(User u : uList) {
+		for(int u : uList) {
 			if(!instance.waitingList.remove(u)) {
 				removedList.forEach(rm -> instance.waitingList.add(rm));
-				return Collections.emptyList();
+				return Collections.emptySet();
 			}
 			removedList.add(u);
 		}
@@ -64,8 +61,8 @@ public class GameProvider {
 
 	public static GameModel getGameByPlayerId(int playerId) {
 		for (GameModel game : instance.games) {
-			for (Map.Entry<Integer, PlayerModel> entry : game.getPlayers().entrySet()) {
-				if (entry.getKey() == playerId) {
+			for(int uid : game.getPlayerIds()) {
+				if(uid == playerId) {
 					return game;
 				}
 			}
@@ -74,14 +71,14 @@ public class GameProvider {
 	}
 	
 	public static void addPoint(GameModel game, int playerId) {
-		game.getPlayers().get(playerId).addPoint();
+		game.getPlayers().put(playerId, game.getPlayers().get(playerId) + 1);
 	}
 	
 	public static Random getRandom() {
 		return instance.random;
 	}
 	
-	public static boolean join(User user) {
-		return instance.waitingList.add(user);
+	public static boolean join(int uid) {
+		return instance.waitingList.add(uid);
 	}
 }
