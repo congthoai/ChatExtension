@@ -1,6 +1,7 @@
 package com.chatting.provider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -41,13 +42,24 @@ public class GameProvider {
 		instance.waitingList.add(user);
 	}
 	
-	public static boolean removeWaitingList(List<User> uList) {
+	public static List<User> getPlayersAndRemoveWaitingList() {
+
+		if (instance.waitingList.size() < Constant.GAME_CONFIG.NUM_PLAYER) {
+			return Collections.emptyList();
+		}
+
+		List<User> uList = instance.waitingList.stream().limit(Constant.GAME_CONFIG.NUM_PLAYER).collect(Collectors.toList()); 		
+		List<User> removedList = new ArrayList<>();
+		
 		for(User u : uList) {
 			if(!instance.waitingList.remove(u)) {
-				return false;
+				removedList.forEach(rm -> instance.waitingList.add(rm));
+				return Collections.emptyList();
 			}
+			removedList.add(u);
 		}
-		return true;
+		
+		return uList;
 	}
 
 	public static GameModel getGameByPlayerId(int playerId) {
@@ -69,13 +81,7 @@ public class GameProvider {
 		return instance.random;
 	}
 	
-	public static List<User> join(User user) {
-		instance.waitingList.add(user);
-		
-		if (instance.waitingList.size() < Constant.GAME_CONFIG.NUM_PLAYER) {
-			return null;
-		}
-
-		return instance.waitingList.stream().limit(Constant.GAME_CONFIG.NUM_PLAYER).collect(Collectors.toList());
+	public static boolean join(User user) {
+		return instance.waitingList.add(user);
 	}
 }
