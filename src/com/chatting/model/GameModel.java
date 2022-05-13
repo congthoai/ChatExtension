@@ -23,8 +23,8 @@ public class GameModel {
 		this.players = new HashMap<>();
 		uList.forEach(u -> players.put(u.getId(), new PlayerModel(u.getName())));
 		this.serverNumberList = IntStream.range(0, 10).boxed().collect(Collectors.toList());
-		this.serverRandomNumber = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));
 		this.rand = rand;
+		this.serverRandomNumber = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));	
 	}
 	
 	public Set<Integer> getPlayerIds() {
