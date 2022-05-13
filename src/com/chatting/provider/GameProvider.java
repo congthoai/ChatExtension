@@ -1,9 +1,11 @@
 package com.chatting.provider;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.chatting.constant.Constant;
@@ -15,12 +17,12 @@ public class GameProvider {
 	private static GameProvider instance = null;
 
 	List<GameModel> games;
-	List<User> waitingList;
+	Set<User> waitingList;
 	Random random = new Random();
 
 	private GameProvider() {
 		games = new ArrayList<>();
-		waitingList = new ArrayList<>();
+		waitingList = new HashSet<>();
 	}
 
 	public static GameProvider getInstance() {
@@ -39,8 +41,13 @@ public class GameProvider {
 		instance.waitingList.add(user);
 	}
 	
-	public static void removeWaitingList(List<User> uList) {
-		uList.forEach(u ->instance.waitingList.remove(u));
+	public static boolean removeWaitingList(List<User> uList) {
+		for(User u : uList) {
+			if(!instance.waitingList.remove(u)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static GameModel getGameByPlayerId(int playerId) {

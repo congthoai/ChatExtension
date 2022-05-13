@@ -21,22 +21,23 @@ public class JoinGameHandler extends BaseClientRequestHandler {
 			System.out.println("Wait..");
 			return;
 		} 			
-
+		
+		if(!GameProvider.removeWaitingList(uList)) {
+			return;
+		}
+		
 		// Start Game
 		newGame(uList);
 	}
 
-	public void newGame(List<User> uList) {
-		GameProvider.removeWaitingList(uList);
+	public void newGame(List<User> uList) {	
 		GameModel game = new GameModel(uList, GameProvider.getRandom());
-		game.removeAndRandomNumberInList(-1);
 		GameProvider.addGames(game);
 
 		ISFSObject obj = new SFSObject();
 		obj.putInt(Constant.GAME_MODEL.RANDOM_NUMBER, game.getServerRandomNumber());
 
 		send(Constant.SEND_EVENT.NOT_MATCH, obj, uList);
-		return;
 	}
 
 }
