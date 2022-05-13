@@ -31,4 +31,8 @@ public class Constant {
         public static final String PLAYER_CHOICE = "playerChoice";
         public static final String WINNER_LIST = "winnerList";
     }
+	
+	public interface GAME_CONFIG {
+		public static final int NUM_PLAYER = 2;
+    }
 }

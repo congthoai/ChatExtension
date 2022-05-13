@@ -17,10 +17,10 @@ public class GameModel {
 	private boolean endGame = false;
 	private Random rand = new Random();
 
-	public GameModel(User p1, User p2) {
-		super();
-		players.put(p1.getId(), new PlayerModel(p1.getName()));
-		players.put(p2.getId(), new PlayerModel(p2.getName()));
+	public GameModel(List<User> uList) {
+		uList.forEach(u -> {
+			players.put(u.getId(), new PlayerModel(u.getName()));
+		});
 		this.endGame = false;
 		this.serverNumberList = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
@@ -43,10 +43,6 @@ public class GameModel {
 
 	public Integer getServerRandomNumber() {
 		return serverRandomNumber;
-	}
-
-	public void setServerRandomNumber(Integer serverNumber) {
-		this.serverRandomNumber = serverNumber;
 	}
 
 	public boolean isEndGame() {

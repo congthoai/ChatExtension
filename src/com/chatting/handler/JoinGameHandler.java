@@ -1,6 +1,5 @@
 package com.chatting.handler;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.chatting.constant.Constant;
@@ -24,24 +23,27 @@ public class JoinGameHandler extends BaseClientRequestHandler {
 			return;
 		}
 
-		User player2 = GameProvider.getAnotherUser();
-		if (player2 == null) {
+		List<User> uList = GameProvider.getAnotherUser(Constant.GAME_CONFIG.NUM_PLAYER);
+		uList.add(sender);
+		
+		if (uList.size() < Constant.GAME_CONFIG.NUM_PLAYER) {
+			GameProvider.addWaitingList(uList);
 			return;
 		}
 
 		// Start Game
-		newGame(sender, player2);
+		newGame(uList);
 	}
 
-	public void newGame(User u1, User u2) {
-		GameModel game = new GameModel(u1, u2);
+	public void newGame(List<User> uList) {
+		GameModel game = new GameModel(uList);
 		game.removeAndRandomNumberInList(-1);
 		GameProvider.addGames(game);
 
 		ISFSObject obj = new SFSObject();
 		obj.putInt(Constant.GAME_MODEL.RANDOM_NUMBER, game.getServerRandomNumber());
 
-		send(Constant.SEND_EVENT.NOT_MATCH, obj, (List<User>) Arrays.asList(u1, u2));
+		send(Constant.SEND_EVENT.NOT_MATCH, obj, uList);
 		return;
 	}
 

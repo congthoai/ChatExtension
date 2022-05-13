@@ -37,8 +37,8 @@ public class ActionGameHandler extends BaseClientRequestHandler {
 		}
 	}
 	
-	private void handleMatch(User sender, GameModel game) {		
-		game.getPlayers().get(sender.getId()).addPoint();
+	private void handleMatch(User sender, GameModel game) {	
+		GameProvider.addPoint(game, sender.getId());
 			
 		ISFSObject obj = new SFSObject();
 		obj.putInt(Constant.GAME_MODEL.RANDOM_NUMBER, game.getServerRandomNumber());

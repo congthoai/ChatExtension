@@ -39,17 +39,29 @@ public class GameProvider {
 	public static void addWaitingList(User user) {
 		instance.waitingList.add(user);
 	}
+	
+	public static void addWaitingList(List<User> uList) {
+		uList.forEach(u -> {
+			instance.waitingList.add(u);
+		});
+	}
 
-	public static User getAnotherUser() {
-		try {
-			Random rand = new Random();
-			User player2 = instance.waitingList.get(rand.nextInt(instance.waitingList.size()));
-			instance.waitingList.remove(player2);
-			return player2;
+	public static List<User> getAnotherUser(int numPlayer) {
+		List<User> uList = new ArrayList<>();
+		Random rand = new Random();
+		try {	
+			while(numPlayer > 1 && instance.waitingList.size() > 0) {
+				User oPlayer = instance.waitingList.get(rand.nextInt(instance.waitingList.size()));
+				instance.waitingList.remove(oPlayer);
+				uList.add(oPlayer);
+				numPlayer--;
+			}
+			
+			return uList;
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-		return null;
+		return uList;
 	}
 
 	public static GameModel getGameByPlayerId(int playerId) {
@@ -61,5 +73,9 @@ public class GameProvider {
 			}
 		}
 		return null;
+	}
+	
+	public static void addPoint(GameModel game, int playerId) {
+		game.getPlayers().get(playerId).addPoint();
 	}
 }
