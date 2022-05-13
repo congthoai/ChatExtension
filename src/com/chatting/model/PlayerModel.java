@@ -2,7 +2,7 @@ package com.chatting.model;
 
 public class PlayerModel {
 	String username;
-	Integer point;
+	int point;
 
 	public PlayerModel(String username) {
 		this.username = username;
@@ -13,7 +13,7 @@ public class PlayerModel {
 		return username;
 	}
 
-	public Integer getPoint() {
+	public int getPoint() {
 		return point;
 	}
 

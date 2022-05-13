@@ -21,7 +21,7 @@ public class ActionGameHandler extends BaseClientRequestHandler {
 		
 		GameModel game = GameProvider.getGameByPlayerId(sender.getId());
 		
-		if (game == null || game.isEndGame()) {
+		if (game == null) {
 			return;
 		}
 		
@@ -32,7 +32,7 @@ public class ActionGameHandler extends BaseClientRequestHandler {
 		
 		handleMatch(sender, game);
 		
-		if (game.getServerNumberList().size() == 0) {
+		if (game.isEndGame()) {
 			handleWin(sender, game);
 		}
 	}

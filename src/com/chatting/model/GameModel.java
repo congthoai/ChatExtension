@@ -20,11 +20,11 @@ public class GameModel {
 	private Random rand;
 
 	public GameModel(List<User> uList, Random rand) {
-		this.players = new HashMap<>();
-		uList.forEach(u -> players.put(u.getId(), new PlayerModel(u.getName())));
-		this.serverNumberList = IntStream.range(0, 10).boxed().collect(Collectors.toList());
 		this.rand = rand;
+		this.players = new HashMap<>();		
+		this.serverNumberList = IntStream.range(0, 10).boxed().collect(Collectors.toList());		
 		this.serverRandomNumber = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));	
+		uList.forEach(u -> players.put(u.getId(), new PlayerModel(u.getName())));
 	}
 	
 	public Set<Integer> getPlayerIds() {
