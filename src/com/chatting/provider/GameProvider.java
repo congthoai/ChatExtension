@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
+import com.chatting.constant.Constant;
 import com.chatting.model.GameModel;
 import com.chatting.model.PlayerModel;
 import com.smartfoxserver.v2.entities.User;
@@ -33,34 +35,12 @@ public class GameProvider {
 		instance.games.add(game);
 	}
 
-	public static List<User> getWaitingList() {
-		return instance.waitingList;
-	}
-
 	public static void addWaitingList(User user) {
 		instance.waitingList.add(user);
 	}
 	
-	public static void addWaitingList(List<User> uList) {
-		uList.forEach(u -> {
-			instance.waitingList.add(u);
-		});
-	}
-
-	public static List<User> getAnotherUser(int numPlayer) {
-		List<User> uList = new ArrayList<>();
-		try {	
-			for (int i = 1; i < numPlayer; i++) {
-				User oPlayer = instance.waitingList.get(instance.random.nextInt(instance.waitingList.size()));
-				instance.waitingList.remove(oPlayer);
-				uList.add(oPlayer);
-			}		
-			
-			return uList;
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-		return uList;
+	public static void removeWaitingList(List<User> uList) {
+		uList.forEach(u ->instance.waitingList.remove(u));
 	}
 
 	public static GameModel getGameByPlayerId(int playerId) {
@@ -80,5 +60,15 @@ public class GameProvider {
 	
 	public static Random getRandom() {
 		return instance.random;
+	}
+	
+	public static List<User> join(User user) {
+		instance.waitingList.add(user);
+		
+		if (instance.waitingList.size() < Constant.GAME_CONFIG.NUM_PLAYER) {
+			return null;
+		}
+
+		return instance.waitingList.stream().limit(Constant.GAME_CONFIG.NUM_PLAYER).collect(Collectors.toList());
 	}
 }

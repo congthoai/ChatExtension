@@ -15,27 +15,19 @@ public class JoinGameHandler extends BaseClientRequestHandler {
 	@Override
 	public void handleClientRequest(User sender, ISFSObject params) {
 		System.out.println("Join Game: " + sender.getName());
-		List<User> waitingList = GameProvider.getWaitingList();
-
-		if (waitingList.size() < 1) {
-			System.out.println("Wait..");
-			GameProvider.addWaitingList(sender);
-			return;
-		}
-
-		List<User> uList = GameProvider.getAnotherUser(Constant.GAME_CONFIG.NUM_PLAYER);
-		uList.add(sender);
+		List<User> uList = GameProvider.join(sender);
 		
-		if (uList.size() < Constant.GAME_CONFIG.NUM_PLAYER) {
-			GameProvider.addWaitingList(uList);
+		if(uList == null) {
+			System.out.println("Wait..");
 			return;
-		}
+		} 			
 
 		// Start Game
 		newGame(uList);
 	}
 
 	public void newGame(List<User> uList) {
+		GameProvider.removeWaitingList(uList);
 		GameModel game = new GameModel(uList, GameProvider.getRandom());
 		game.removeAndRandomNumberInList(-1);
 		GameProvider.addGames(game);
