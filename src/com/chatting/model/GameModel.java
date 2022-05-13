@@ -15,18 +15,15 @@ public class GameModel {
 	private List<Integer> serverNumberList = new ArrayList<>();
 	private Integer serverRandomNumber;
 	private boolean endGame = false;
-	private Random rand = new Random();
+	private Random rand;
 
-	public GameModel(List<User> uList) {
-		uList.forEach(u -> {
-			players.put(u.getId(), new PlayerModel(u.getName()));
-		});
-		this.endGame = false;
-		this.serverNumberList = new ArrayList<>();
+	public GameModel(List<User> uList, Random rand) {
+		uList.forEach(u -> { players.put(u.getId(), new PlayerModel(u.getName())); });
 		for (int i = 0; i < 10; i++) {
 			this.serverNumberList.add(i);
 		}
 		this.serverRandomNumber = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));
+		this.rand = rand;
 	}
 	
 	public Set<Integer> getPlayerIds() {
@@ -49,15 +46,14 @@ public class GameModel {
 		return endGame;
 	}
 
-	public void setEndGame(boolean endGame) {
-		this.endGame = endGame;
-	}
-
 	public boolean removeAndRandomNumberInList(Integer num) {	
 		if (serverRandomNumber == num && this.serverNumberList.remove(num)) {
-			this.serverRandomNumber = this.serverNumberList.size() > 0
-					? this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()))
-					: -1;
+			if(this.serverNumberList.size() == 0) {
+				this.endGame = true;
+				return true;
+			} 
+			
+			this.serverRandomNumber = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));
 			return true;
 		}
 		return false;

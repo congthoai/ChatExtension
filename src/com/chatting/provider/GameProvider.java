@@ -14,6 +14,7 @@ public class GameProvider {
 
 	List<GameModel> games;
 	List<User> waitingList;
+	Random random = new Random();
 
 	private GameProvider() {
 		games = new ArrayList<>();
@@ -48,10 +49,9 @@ public class GameProvider {
 
 	public static List<User> getAnotherUser(int numPlayer) {
 		List<User> uList = new ArrayList<>();
-		Random rand = new Random();
 		try {	
 			while(numPlayer > 1 && instance.waitingList.size() > 0) {
-				User oPlayer = instance.waitingList.get(rand.nextInt(instance.waitingList.size()));
+				User oPlayer = instance.waitingList.get(instance.random.nextInt(instance.waitingList.size()));
 				instance.waitingList.remove(oPlayer);
 				uList.add(oPlayer);
 				numPlayer--;
@@ -77,5 +77,9 @@ public class GameProvider {
 	
 	public static void addPoint(GameModel game, int playerId) {
 		game.getPlayers().get(playerId).addPoint();
+	}
+	
+	public static Random getRandom() {
+		return instance.random;
 	}
 }

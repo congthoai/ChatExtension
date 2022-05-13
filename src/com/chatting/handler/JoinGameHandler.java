@@ -1,6 +1,7 @@
 package com.chatting.handler;
 
 import java.util.List;
+import java.util.Random;
 
 import com.chatting.constant.Constant;
 import com.chatting.model.GameModel;
@@ -36,7 +37,7 @@ public class JoinGameHandler extends BaseClientRequestHandler {
 	}
 
 	public void newGame(List<User> uList) {
-		GameModel game = new GameModel(uList);
+		GameModel game = new GameModel(uList, GameProvider.getRandom());
 		game.removeAndRandomNumberInList(-1);
 		GameProvider.addGames(game);
 

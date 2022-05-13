@@ -52,7 +52,6 @@ public class ActionGameHandler extends BaseClientRequestHandler {
 	}
 	
 	private void handleWin(User sender, GameModel game) {
-		game.setEndGame(true);
 		ISFSObject obj = new SFSObject();
 		obj.putUtfStringArray(Constant.GAME_MODEL.WINNER_LIST, game.getWinners().stream().map(item -> item.getUsername()).collect(Collectors.toList()));
 		
