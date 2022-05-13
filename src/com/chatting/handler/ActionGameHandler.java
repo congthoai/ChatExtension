@@ -15,40 +15,43 @@ public class ActionGameHandler extends BaseClientRequestHandler {
 
 	@Override
 	public void handleClientRequest(User sender, ISFSObject params) {
+		if(!params.containsKey(Constant.GAME_MODEL.PLAYER_CHOICE)) {
+			return;
+		}
+		
 		GameModel game = GameProvider.getGameByPlayerId(sender.getId());
 		
-		if (game == null || game.isEndGame() || !params.containsKey(Constant.GAME_MODEL.PLAYER_CHOICE)) {
+		if (game == null || game.isEndGame()) {
 			return;
 		}
 		
 		if (!game.removeAndRandomNumberInList(params.getInt(Constant.GAME_MODEL.PLAYER_CHOICE))) {
-			unmatchHandler(sender, game);
+			handleUnmatch(sender, game);
 			return;
 		}
 		
-		matchHandler(sender, game);
+		handleMatch(sender, game);
+		
+		if (game.getServerNumberList().size() == 0) {
+			handleWin(sender, game);
+		}
 	}
 	
-	private void matchHandler(User sender, GameModel game) {		
+	private void handleMatch(User sender, GameModel game) {		
 		game.getPlayers().get(sender.getId()).addPoint();
-	
-		if (game.getServerNumberList().size() == 0) {
-			winHandler(sender, game);
-			return;
-		}
-		
+			
 		ISFSObject obj = new SFSObject();
 		obj.putInt(Constant.GAME_MODEL.RANDOM_NUMBER, game.getServerRandomNumber());
 		send(Constant.SEND_EVENT.MATCH, obj, ZoneProvider.getGameUsers(game.getPlayerIds()));
 	}
 	
-	private void unmatchHandler(User sender, GameModel game) {
+	private void handleUnmatch(User sender, GameModel game) {
 		ISFSObject obj = new SFSObject();
 		obj.putInt(Constant.GAME_MODEL.RANDOM_NUMBER, game.getServerRandomNumber());
 		send(Constant.SEND_EVENT.NOT_MATCH, obj, sender);
 	}
 	
-	private void winHandler(User sender, GameModel game) {
+	private void handleWin(User sender, GameModel game) {
 		game.setEndGame(true);
 		ISFSObject obj = new SFSObject();
 		obj.putUtfStringArray(Constant.GAME_MODEL.WINNER_LIST, game.getWinners().stream().map(item -> item.getUsername()).collect(Collectors.toList()));
