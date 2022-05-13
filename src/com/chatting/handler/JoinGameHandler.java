@@ -1,7 +1,6 @@
 package com.chatting.handler;
 
 import java.util.List;
-import java.util.Random;
 
 import com.chatting.constant.Constant;
 import com.chatting.model.GameModel;

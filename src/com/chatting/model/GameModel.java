@@ -1,11 +1,14 @@
 package com.chatting.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.smartfoxserver.v2.entities.User;
 
@@ -19,9 +22,8 @@ public class GameModel {
 
 	public GameModel(List<User> uList, Random rand) {
 		uList.forEach(u -> { players.put(u.getId(), new PlayerModel(u.getName())); });
-		for (int i = 0; i < 10; i++) {
-			this.serverNumberList.add(i);
-		}
+		int [] nList = IntStream.generate(() -> rand.nextInt(10)).limit(10).toArray();
+		this.serverNumberList = Arrays.stream(nList).boxed().collect(Collectors.toList());
 		this.serverRandomNumber = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));
 		this.rand = rand;
 	}
@@ -49,11 +51,10 @@ public class GameModel {
 	public boolean removeAndRandomNumberInList(Integer num) {	
 		if (serverRandomNumber == num && this.serverNumberList.remove(num)) {
 			if(this.serverNumberList.size() == 0) {
-				this.endGame = true;
-				return true;
-			} 
-			
-			this.serverRandomNumber = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));
+				this.endGame = true;				
+			} else {
+				this.serverRandomNumber = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));
+			}	
 			return true;
 		}
 		return false;
