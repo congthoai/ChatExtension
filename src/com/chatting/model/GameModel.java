@@ -1,7 +1,6 @@
 package com.chatting.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,16 +13,16 @@ import com.smartfoxserver.v2.entities.User;
 
 public class GameModel {
 
-	private Map<Integer, PlayerModel> players = new HashMap<>();
-	private List<Integer> serverNumberList = new ArrayList<>();
+	private Map<Integer, PlayerModel> players;
+	private List<Integer> serverNumberList;
 	private Integer serverRandomNumber;
 	private boolean endGame = false;
 	private Random rand;
 
 	public GameModel(List<User> uList, Random rand) {
-		uList.forEach(u -> { players.put(u.getId(), new PlayerModel(u.getName())); });
-		int [] nList = IntStream.generate(() -> rand.nextInt(10)).limit(10).toArray();
-		this.serverNumberList = Arrays.stream(nList).boxed().collect(Collectors.toList());
+		this.players = new HashMap<>();
+		uList.forEach(u -> players.put(u.getId(), new PlayerModel(u.getName())));
+		this.serverNumberList = IntStream.range(0, 10).boxed().collect(Collectors.toList());
 		this.serverRandomNumber = this.serverNumberList.get(rand.nextInt(this.serverNumberList.size()));
 		this.rand = rand;
 	}
