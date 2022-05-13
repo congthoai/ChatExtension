@@ -50,12 +50,11 @@ public class GameProvider {
 	public static List<User> getAnotherUser(int numPlayer) {
 		List<User> uList = new ArrayList<>();
 		try {	
-			while(numPlayer > 1 && instance.waitingList.size() > 0) {
+			for (int i = 1; i < numPlayer; i++) {
 				User oPlayer = instance.waitingList.get(instance.random.nextInt(instance.waitingList.size()));
 				instance.waitingList.remove(oPlayer);
 				uList.add(oPlayer);
-				numPlayer--;
-			}
+			}		
 			
 			return uList;
 		} catch (Exception e) {
