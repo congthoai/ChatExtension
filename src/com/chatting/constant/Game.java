@@ -3,13 +3,11 @@ package com.chatting.constant;
 public class Game {
 	
 	public interface EVENT {
-		public static final String JOIN_GAME = "joingame";
-	    public static final String ACTION_SEND = "actionSend";	    
+	    public static final String ACTION_SEND = "actionSend";
     }
 	
 	public interface CMD {
 		public static final String WIN_GAME = "win";
-	    public static final String LOG_OUT = "logout";
 	    public static final String MATCH = "match";
 	    public static final String NOT_MATCH = "notMatch";	    
     }
@@ -22,6 +20,9 @@ public class Game {
         public static final String PLAYER_CHOICE = "playerChoice";
         public static final String WINNER_LIST = "winnerList";
         public static final String POINT = "point";
+        public static final String EVENT_TYPE = "eventType";
+        public static final String JOIN = "join";
+        public static final String SEND = "send";
     }
-
+	
 }
