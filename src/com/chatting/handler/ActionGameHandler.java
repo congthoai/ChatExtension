@@ -17,13 +17,13 @@ public class ActionGameHandler extends BaseClientRequestHandler {
 	@Override
 	public void handleClientRequest(User sender, ISFSObject params) {
 		
-		String eventType = params.getUtfString(Game.MODEL.EVENT_TYPE);
+		String actionType = params.getUtfString(Game.MODEL.ACTION_TYPE);
 		
-		switch (eventType) {
-		case Game.MODEL.JOIN:
+		switch (actionType) {
+		case Game.MODEL.ACTION_JOIN:
 			handleJoin(sender);
 			break;
-		case Game.MODEL.SEND:
+		case Game.MODEL.ACTION_SEND:
 			handleSend(sender, params);
 			break;
 		}

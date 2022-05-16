@@ -20,9 +20,9 @@ public class Game {
         public static final String PLAYER_CHOICE = "playerChoice";
         public static final String WINNER_LIST = "winnerList";
         public static final String POINT = "point";
-        public static final String EVENT_TYPE = "eventType";
-        public static final String JOIN = "join";
-        public static final String SEND = "send";
+        public static final String ACTION_TYPE = "eventType";
+        public static final String ACTION_JOIN = "join";
+        public static final String ACTION_SEND = "send";
     }
 	
 }
