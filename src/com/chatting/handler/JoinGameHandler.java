@@ -2,7 +2,7 @@ package com.chatting.handler;
 
 import java.util.Set;
 
-import com.chatting.constant.Constant;
+import com.chatting.constant.Game;
 import com.chatting.model.GameModel;
 import com.chatting.provider.GameProvider;
 import com.chatting.provider.ZoneProvider;
@@ -29,9 +29,9 @@ public class JoinGameHandler extends BaseClientRequestHandler {
 		GameProvider.addGames(game);
 
 		ISFSObject obj = new SFSObject();
-		obj.putInt(Constant.GAME_MODEL.RANDOM_NUMBER, game.getServerRandomNumber());
+		obj.putInt(Game.MODEL.RANDOM_NUMBER, game.getServerRandomNumber());
 
-		send(Constant.SEND_EVENT.NOT_MATCH, obj, ZoneProvider.getGameUsers(uList));
+		send(Game.CMD.NOT_MATCH, obj, ZoneProvider.getGameUsers(uList));
 	}
 
 }

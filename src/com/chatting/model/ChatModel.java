@@ -1,6 +1,6 @@
 package com.chatting.model;
 
-import com.chatting.constant.Constant;
+import com.chatting.constant.Chat;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 
@@ -16,8 +16,8 @@ public class ChatModel {
 	
 	public ISFSObject toSFSObject() {
 		ISFSObject so = new SFSObject();
-		so.putUtfString(Constant.CHAT_MODEL.USERNAME, username);
-        so.putUtfString(Constant.CHAT_MODEL.MESSAGE, message);
+		so.putUtfString(Chat.MODEL.USERNAME, username);
+        so.putUtfString(Chat.MODEL.MESSAGE, message);
         
 		return so;
 	}

@@ -1,6 +1,7 @@
 package com.chatting;
 
-import com.chatting.constant.Constant;
+import com.chatting.constant.Chat;
+import com.chatting.constant.Game;
 import com.chatting.handler.ActionGameHandler;
 import com.chatting.handler.ChattingHandler;
 import com.chatting.handler.JoinGameHandler;
@@ -17,10 +18,10 @@ public class ChatExtension extends SFSExtension{
 		addEventHandler(SFSEventType.USER_LOGIN, LoginHandler.class);
 		addEventHandler(SFSEventType.USER_JOIN_ZONE, LoginHandler.class);
 		
-		addRequestHandler(Constant.SEND_EVENT.CHATTING_EVENT, ChattingHandler.class);
+		addRequestHandler(Chat.EVENT.CHATTING, ChattingHandler.class);
 		
-		addRequestHandler(Constant.SEND_EVENT.JOIN_GAME, JoinGameHandler.class);
-		addRequestHandler(Constant.SEND_EVENT.ACTION_SEND, ActionGameHandler.class);
+		addRequestHandler(Game.EVENT.JOIN_GAME, JoinGameHandler.class);
+		addRequestHandler(Game.EVENT.ACTION_SEND, ActionGameHandler.class);
 		
 		ZoneProvider.getInstance(this);
 		GameProvider.getInstance();

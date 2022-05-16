@@ -1,6 +1,6 @@
 package com.chatting.handler;
 
-import com.chatting.constant.Constant;
+import com.chatting.constant.Game;
 import com.chatting.model.GameModel;
 import com.chatting.provider.GameProvider;
 import com.chatting.provider.ZoneProvider;
@@ -13,7 +13,7 @@ public class ActionGameHandler extends BaseClientRequestHandler {
 
 	@Override
 	public void handleClientRequest(User sender, ISFSObject params) {
-		if(!params.containsKey(Constant.GAME_MODEL.PLAYER_CHOICE)) {
+		if(!params.containsKey(Game.MODEL.PLAYER_CHOICE)) {
 			return;
 		}
 		
@@ -23,7 +23,7 @@ public class ActionGameHandler extends BaseClientRequestHandler {
 			return;
 		}
 		
-		if (!game.removeAndRandomNumberInList(params.getInt(Constant.GAME_MODEL.PLAYER_CHOICE))) {
+		if (!game.removeAndRandomNumberInList(params.getInt(Game.MODEL.PLAYER_CHOICE))) {
 			handleUnmatch(sender, game);
 			return;
 		}
@@ -39,21 +39,21 @@ public class ActionGameHandler extends BaseClientRequestHandler {
 		GameProvider.addPoint(game, sender.getId());
 			
 		ISFSObject obj = new SFSObject();
-		obj.putInt(Constant.GAME_MODEL.RANDOM_NUMBER, game.getServerRandomNumber());
-		send(Constant.SEND_EVENT.MATCH, obj, ZoneProvider.getGameUsers(game.getPlayerIds()));
+		obj.putInt(Game.MODEL.RANDOM_NUMBER, game.getServerRandomNumber());
+		send(Game.CMD.MATCH, obj, ZoneProvider.getGameUsers(game.getPlayerIds()));
 	}
 	
 	private void handleUnmatch(User sender, GameModel game) {
 		ISFSObject obj = new SFSObject();
-		obj.putInt(Constant.GAME_MODEL.RANDOM_NUMBER, game.getServerRandomNumber());
-		send(Constant.SEND_EVENT.NOT_MATCH, obj, sender);
+		obj.putInt(Game.MODEL.RANDOM_NUMBER, game.getServerRandomNumber());
+		send(Game.CMD.NOT_MATCH, obj, sender);
 	}
 	
 	private void handleWin(User sender, GameModel game) {
 		ISFSObject obj = new SFSObject();
-		obj.putIntArray(Constant.GAME_MODEL.WINNER_LIST, game.getWinners());
+		obj.putIntArray(Game.MODEL.WINNER_LIST, game.getWinners());
 		
-		send(Constant.SEND_EVENT.WIN_GAME, obj, ZoneProvider.getGameUsers(game.getPlayerIds()));
+		send(Game.CMD.WIN_GAME, obj, ZoneProvider.getGameUsers(game.getPlayerIds()));
 	}
 
 }

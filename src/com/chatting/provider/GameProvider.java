@@ -8,7 +8,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.chatting.constant.Constant;
+import com.chatting.constant.Config;
 import com.chatting.model.GameModel;
 
 public class GameProvider {
@@ -41,11 +41,11 @@ public class GameProvider {
 	
 	public static Set<Integer> startGame() {
 
-		if (instance.waitingList.size() < Constant.GAME_CONFIG.NUM_PLAYER) {
+		if (instance.waitingList.size() < Config.GAME_CONFIG.NUM_PLAYER) {
 			return Collections.emptySet();
 		}
 
-		Set<Integer> uList = instance.waitingList.stream().limit(Constant.GAME_CONFIG.NUM_PLAYER).collect(Collectors.toSet()); 		
+		Set<Integer> uList = instance.waitingList.stream().limit(Config.GAME_CONFIG.NUM_PLAYER).collect(Collectors.toSet()); 		
 		Set<Integer> removedList = new HashSet<>();
 		
 		for(int u : uList) {
